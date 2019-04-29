@@ -20,9 +20,9 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
 
 4. Create the packet index template by running `scripts|templates.sh` as follows specifying the node IP address and TCP port of your Elasticsearch instance (localhost:9200 in this example):
    ```
-   scripts|template.sh localhost:9200
+   scripts|packet_template.sh localhost:9200
    ```
-   If you are using Elasticsearch 6.x, run `template-6.x.sh` instead.
+   If you are using Elasticsearch 6.x, run `packet_template-6.x.sh` instead.
 
 5. Set the `tshark_path` variable in the `config|espcap.yml` file.  You can locate `espcap.yml` in one of 3 places:
    - Use the file directly from `config|`
