@@ -33,7 +33,7 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
 6. cd into the `src` directory.
 7. Run `espcap.py` to index some packet data in Elasticsearch:
     ```
-    espcap.py --file=test_pcaps|test_http.pcap --node=localhost:9200
+    espcap.py --file=test_pcaps/test_http.pcap --node=localhost:9200
     ```
     
 8. Run `packet_query.sh` as follows to check that the packet data resides in your Elasticsearch instance:
@@ -66,12 +66,12 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
 
 + Load the test packet capture files and index the packets in the Elasticsearch cluster running at 10.0.0.1:9200, assuming your present working directory is `espcap|src`:
   ```
-  espcap.py --dir=..|test_pcaps --node=10.0.0.1:9200
+  espcap.py --dir=../test_pcaps --node=10.0.0.1:9200
   ```
 
 + Same as the previous except load the `test_pcaps|test_http.pcap` file:
   ```
-  espcap.py --file=..|test_pcaps|test_http.pcap --node=10.0.0.1:9200
+  espcap.py --file=../test_pcaps|test_http.pcap --node=10.0.0.1:9200
   ```
 
 + Do a live capture from the network interface `eth0`, get all packets and index them in the Elasticsearch cluster running at 10.0.0.1:9200:
