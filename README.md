@@ -217,7 +217,9 @@ Packets from *tshark* are indexed just as they are received.  Packet payloads ar
       }
 ```
 
-There are a considerable number of fields in each, mnpot all of which can be indexed efficiently in Elasticsearch.  The fields that are indexed are given in the *template.sh* and *template-6.x.sh* scripts discussed in the next section. To get UDP packets for a given index from most recent to least recently captured, you could use a query like this:
+As you can see, there are a considerable number of fields in each packet, not all of should be indexed in Elasticsearch.  Large number of indexed fields can slow down ingestions.  You should index only the fields you plan to use for searching.  
+
+The default fields that are indexed are included in template creation commands in the *template.sh* and *template-6.x.sh* scripts (see the next section for more details).   To get UDP packets for a given index from the most recent to least recently captured, you could use a query like this:
 
 ```
 GET packets-2019-04-01|_search
