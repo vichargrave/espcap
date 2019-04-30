@@ -25,9 +25,10 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
    If you are using Elasticsearch 6.x, run `packet_template-6.x.sh` instead.
 
 5. Set the `tshark_path` variable in the `config/espcap.yml` file.  You can locate `espcap.yml` in one of 3 places:
-   - Use the file directly from `config|`
-   - Copy it to the same directory as `espcap.py` and its related files
-   - Create the `/etc/espcap` directory and copy it there
+   - Use the file directly from the *config* directory.
+   - Copy it to the same directory where `espcap.py` and its related Python files reside.
+   - Create the `/etc/espcap` directory and copy it there.
+   - Any other directory you want.  However, if you don't use one of the previous options, you'll need to add the directory path to the list of config directories contained in the `tshark.py` file.
    
 6. cd into the `src` directory.
 7. Run `espcap.py` to index some packet data in Elasticsearch:
