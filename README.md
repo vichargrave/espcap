@@ -1,6 +1,6 @@
 #  Espcap
 
-__Espcap__ is a program that uses __tshark__ to capture packets from a pcap file or live from a network interface and index them with Elasticsearch.  __Espcap__ runs only on Python 3.x.  For those of you who used my previous version of this application, I completed deleted the previous version since I moved awy from using Pyshark and did not want to support that version. This version of **Espcap** is lighter weight since is has far fewer module dependencies. 
+__Espcap__ is a program that uses __tshark__ to capture packets from a pcap file or live from a network interface and index them with Elasticsearch.  __Espcap__ runs only on Python 3.x.  For those of you who used my previous version of this application, I completely deleted that version since I moved away from using Pyshark. This version of **Espcap** is lighter weight since it has far fewer module dependencies. 
 
 ## Requirements
 
@@ -20,14 +20,14 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
 
 4. Create the packet index template by running `scripts|templates.sh` as follows specifying the node IP address and TCP port of your Elasticsearch instance (localhost:9200 in this example):
    ```
-   scripts|packet_template.sh localhost:9200
+   scripts/packet_template.sh localhost:9200
    ```
    If you are using Elasticsearch 6.x, run `packet_template-6.x.sh` instead.
 
-5. Set the `tshark_path` variable in the `config|espcap.yml` file.  You can locate `espcap.yml` in one of 3 places:
+5. Set the `tshark_path` variable in the `config/espcap.yml` file.  You can locate `espcap.yml` in one of 3 places:
    - Use the file directly from `config|`
    - Copy it to the same directory as `espcap.py` and its related files
-   - Create the `|etc|espcap` directory and copy it there
+   - Create the `/etc/espcap` directory and copy it there
    
 6. cd into the `src` directory.
 7. Run `espcap.py` to index some packet data in Elasticsearch:
@@ -37,7 +37,7 @@ __Espcap__ is a program that uses __tshark__ to capture packets from a pcap file
     
 8. Run `packet_query.sh` as follows to check that the packet data resides in your Elasticsearch instance:
     ```
-    scripts|packet_query.sh localhost:9200
+    scripts/packet_query.sh localhost:9200
     ```
 
 ## Running Examples
@@ -281,4 +281,4 @@ GET packets-2019-04-01|_search
 }
 ```
 
-If you want to change the mappings for your packets, just revise the packet template scripts to your liking. You will have to delete your existing packet indexing template, if any, before creating a new one. You should keep dynamic indexing turned off so Elasticsearch does not create new mappings as new packet protocols and fields are encountered.
+If you want to change the mappings for your packets, just revise the packet template scripts to your liking. Specific application level protocols or additional fields in the other lower level protocols that you want to use for searching are good candidates to add to the mapping template scripts.  You will have to delete your existing packet indexing template, if any, before creating a new one. You should keep dynamic indexing turned off so Elasticsearch does not create new mappings as new packet protocols and fields are encountered.
