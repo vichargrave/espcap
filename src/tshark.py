@@ -26,7 +26,6 @@ import json
 
 closing = False
 
-# Sets flag  to stop capture when the current packet is processed.
 def _exit_gracefully(signum, frame):
     """ Sets global closing flag.
 
@@ -57,9 +56,7 @@ class Tshark(object):
     def capture(self, command):
         """ Generator to do packet capture.
 
-        :param nic: Network interface
-        :param count: Number of packets to capture, 0 capture indefinitely
-        :param bpf: Packet filter expressions
+        :param command: tshark command to execute
         :return: Packet JSON object that can be indexed in Elasticsearch
         """
         global closing
@@ -75,7 +72,6 @@ class Tshark(object):
                 print('Capture interrupted')
                 sys.exit()
 
-    # List all the network interfaces available
     def list_interfaces(self, command):
         """ Get all the network interfaces available.
 
@@ -129,7 +125,7 @@ class Tshark(object):
         """ Drops the bulk index line from the tshark packet output
 
         :param line: Line with extra characters
-        :return: Line minus the extra characters
+        :return: line or None if the line contains Elasticsearxh
         """
         decoded_line = line.decode().rstrip('\n')
         if decoded_line.startswith('{\"index\":') is True:
