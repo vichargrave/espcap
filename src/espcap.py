@@ -42,7 +42,8 @@ def init_live_capture(es, tshark, indexer, nic, bpf, chunk, count):
     :param count: Number of packets to capture, 0 if capturing indefinitely,
     """
     try:
-        capture = tshark.live_capture(nic=nic, bpf=bpf, count=count)
+        command = tshark.make_command(nic=nic, count=count, bpf=bpf, pcap_file=None, interfaces=False)
+        capture = tshark.capture(command=command)
         if es is None:
             indexer.dump_packets(capture=capture)
         else:
@@ -66,8 +67,9 @@ def init_file_capture(es, tshark, indexer, pcap_files, chunk):
     try:
         print('Loading packet capture file(s)')
         for pcap_file in pcap_files:
+            command = tshark.make_command(nic=None, count=0, bpf=None, pcap_file=pcap_file, interfaces=None)
             print(pcap_file)
-            capture = tshark.file_capture(pcap_file)
+            capture = tshark.capture(command=command)
             if es is None:
                 indexer.dump_packets(capture=capture)
             else:
@@ -98,7 +100,8 @@ def main(node, nic, file, dir, bpf, chunk, count, list):
         tshark.set_interrupt_handler()
 
         if list:
-            tshark.list_interfaces()
+            command = tshark.make_command(nic=None, count=0, bpf=None, pcap_file=None, interfaces=True)
+            tshark.list_interfaces(command=command)
             sys.exit(0)
 
         if nic is None and file is None and dir is None:

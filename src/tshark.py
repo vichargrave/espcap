@@ -54,28 +54,8 @@ class Tshark(object):
         print("Could not find configuration file")
         sys.exit(1)
 
-    def file_capture(self, pcap_file):
-        """ Generator to do file capture.
-
-        :param pcap_file: PCAP file
-        :return: Packet JSON object that can be indexed in Elasticsearch
-        """
-        global closing
-        command = self._make_command(nic=None, count=0, bpf=None, pcap_file=pcap_file, interfaces=None)
-        with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1) as proc:
-            for packet in proc.stdout:
-                packet = self._filter_line(packet)
-                if packet is None:
-                    continue
-                else:
-                    yield json.loads(packet)
-
-            if closing is True:
-                print('Capture interrupted')
-                sys.exit()
-
-    def live_capture(self, nic, count, bpf):
-        """ Generator to do live capture.
+    def capture(self, command):
+        """ Generator to do packet capture.
 
         :param nic: Network interface
         :param count: Number of packets to capture, 0 capture indefinitely
@@ -83,10 +63,9 @@ class Tshark(object):
         :return: Packet JSON object that can be indexed in Elasticsearch
         """
         global closing
-        command = self._make_command(nic=nic, count=count, bpf=bpf, pcap_file=None, interfaces=False)
         with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1) as proc:
             for packet in proc.stdout:
-                packet = self._filter_line(packet)
+                packet = self._drop_index_line(packet)
                 if packet is None:
                     continue
                 else:
@@ -97,36 +76,16 @@ class Tshark(object):
                 sys.exit()
 
     # List all the network interfaces available
-    def list_interfaces(self):
+    def list_interfaces(self, command):
         """ Get all the network interfaces available.
 
         :return: List of network interfaces
         """
-        command = self._make_command(nic=None, count=None, bpf=None, pcap_file=None, interfaces=True)
         with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1) as proc:
             for interface in proc.stdout:
                 print(interface.decode().rstrip('\n'))
 
-    # What to do when the application is interrupted.
-    def set_interrupt_handler(self):
-        """ Set interrupt handlers """
-        signal.signal(signal.SIGTERM, _exit_gracefully)
-        signal.signal(signal.SIGINT, _exit_gracefully)
-
-    def _filter_line(self, line):
-        """ Drops the bulk index line from the tshark packet output
-
-        :param line: Line with extra characters
-        :return: Line minus the extra characters
-        """
-        decoded_line = line.decode().rstrip('\n')
-        if decoded_line.startswith('{\"index\":') is True:
-            return None
-        else:
-            return decoded_line
-
-    # Builds the tshark command with arguments.
-    def _make_command(self, nic, count, bpf, pcap_file, interfaces):
+    def make_command(self, nic, count, bpf, pcap_file, interfaces):
         """ Builds a tshark command to execute.
 
         :param nic: Network interface
@@ -159,3 +118,21 @@ class Tshark(object):
             command.append(pcap_file)
 
         return command
+
+    # What to do when the application is interrupted.
+    def set_interrupt_handler(self):
+        """ Set interrupt handlers """
+        signal.signal(signal.SIGTERM, _exit_gracefully)
+        signal.signal(signal.SIGINT, _exit_gracefully)
+
+    def _drop_index_line(self, line):
+        """ Drops the bulk index line from the tshark packet output
+
+        :param line: Line with extra characters
+        :return: Line minus the extra characters
+        """
+        decoded_line = line.decode().rstrip('\n')
+        if decoded_line.startswith('{\"index\":') is True:
+            return None
+        else:
+            return decoded_line
