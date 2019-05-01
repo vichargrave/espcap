@@ -28,9 +28,9 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
 from tshark import Tshark
-from indexer import Indexer
+from indexer import index_packets, dump_packets
 
-def init_live_capture(es, tshark, indexer, nic, bpf, chunk, count):
+def init_live_capture(es, tshark, nic, bpf, chunk, count):
     """ Set up for live packet capture.
 
     :param es: Elasticsearch cluster handle, None if packets are dumped to stdout
@@ -43,11 +43,11 @@ def init_live_capture(es, tshark, indexer, nic, bpf, chunk, count):
     """
     try:
         command = tshark.make_command(nic=nic, count=count, bpf=bpf, pcap_file=None, interfaces=False)
-        capture = tshark.capture(command=command)
+        capture = tshark.capture(command)
         if es is None:
-            indexer.dump_packets(capture=capture)
+            dump_packets(capture)
         else:
-            helpers.bulk(client=es, actions=indexer.index_packets(capture=capture, pcap_file=None), chunk_size=chunk, raise_on_error=True)
+            helpers.bulk(client=es, actions=index_packets(capture=capture), chunk_size=chunk, raise_on_error=True)
 
     except Exception as e:
         print('[ERROR] ', e)
@@ -55,7 +55,7 @@ def init_live_capture(es, tshark, indexer, nic, bpf, chunk, count):
         sys.ext(1)
 
 
-def init_file_capture(es, tshark, indexer, pcap_files, chunk):
+def init_file_capture(es, tshark, pcap_files, chunk):
     """ Set up for file packet capture.
 
     :param es: Elasticsearch cluster handle, None if packets are dumped to stdout
@@ -69,11 +69,11 @@ def init_file_capture(es, tshark, indexer, pcap_files, chunk):
         for pcap_file in pcap_files:
             command = tshark.make_command(nic=None, count=0, bpf=None, pcap_file=pcap_file, interfaces=None)
             print(pcap_file)
-            capture = tshark.capture(command=command)
+            capture = tshark.capture(command)
             if es is None:
-                indexer.dump_packets(capture=capture)
+                dump_packets(capture)
             else:
-                helpers.bulk(client=es, actions=indexer.index_packets(capture=capture, pcap_file=pcap_file), chunk_size=chunk, raise_on_error=True)
+                helpers.bulk(client=es, actions=index_packets(capture=capture), chunk_size=chunk, raise_on_error=True)
 
     except Exception as e:
         print('[ERROR] ', e)
@@ -92,16 +92,16 @@ def init_file_capture(es, tshark, indexer, pcap_files, chunk):
 @click.option('--list', is_flag=True, help='Lists the network interfaces')
 def main(node, nic, file, dir, bpf, chunk, count, list):
     try:
-        indexer = Indexer()
         tshark = Tshark()
+        tshark.set_interrupt_handler()
+
         es = None
         if node is not None:
             es = Elasticsearch(node)
-        tshark.set_interrupt_handler()
 
         if list:
             command = tshark.make_command(nic=None, count=0, bpf=None, pcap_file=None, interfaces=True)
-            tshark.list_interfaces(command=command)
+            tshark.list_interfaces(command)
             sys.exit(0)
 
         if nic is None and file is None and dir is None:
@@ -115,12 +115,12 @@ def main(node, nic, file, dir, bpf, chunk, count, list):
         syslog.syslog("espcap started")
 
         if nic is not None:
-            init_live_capture(es=es, tshark=tshark, indexer=indexer, nic=nic, bpf=bpf, chunk=chunk, count=count)
+            init_live_capture(es=es, tshark=tshark, nic=nic, bpf=bpf, chunk=chunk, count=count)
 
         elif file is not None:
             pcap_files = []
             pcap_files.append(file)
-            init_file_capture(es=es, tshark=tshark, indexer=indexer, pcap_files=pcap_files, chunk=chunk)
+            init_file_capture(es=es, tshark=tshark, pcap_files=pcap_files, chunk=chunk)
 
         elif dir is not None:
             pcap_files = []
