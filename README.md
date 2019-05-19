@@ -14,7 +14,7 @@ __Espcap__ is a program that uses __tshark__ to capture packets live from a netw
 4. Elasticsearch Python Client module 7.x
 5. Elasticsearch 7.x
 
-### Support for  *Elasticsearch 7.x* requires:
+### Support for  *Elasticsearch 6.x* requires:
 
 1. Requirements 1 - 3 listed above
 2. Elasticsearch Python Client module 6.x
