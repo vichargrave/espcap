@@ -281,7 +281,7 @@ Trying to index all the possible packet fields can slow Elasticsearch down, so a
 | tcp      | tcp_tcp_ack                             | integer
 | tcp      | tcp_tcp_window_size                     | integer
 
-The mapping for `frame_frame_protocols` enables you to search for any protocol withing a given packet . For example if you want to revise the query used before to find DNS, instead of using ports, you could query with the `dns` in the `frame_frame_protocols` field:
+The mapping for `frame_frame_protocols` enables you to search for any protocol within a given packet . For example, if you want to revise the query used before to find DNS, instead of using ports, you could query with the `dns` in the `frame_frame_protocols` field:
 
 ```
 GET packets-2019-04-01/_search
