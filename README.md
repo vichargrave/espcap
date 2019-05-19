@@ -1,6 +1,6 @@
 #  Espcap
 
-__Espcap__ is a program that uses __tshark__ to capture packets live from a network interface or from PCAP files and index them in Elasticsearch.  __Espcap__ runs only on Python 3.x.  For those of you who used **Espcap** previously, note that I deleted that repo and replaced it with this one when I decided to move away fron Pyshark for packet capture. This version of __Espcap__ is lighter weight since it has far fewer module dependencies. 
+__Espcap__ is a program that uses __tshark__ to capture packets live from a network interface or from PCAP files and index them in Elasticsearch.  __Espcap__ runs only on Python 3.x.  For those of you who used **Espcap** previously, note  I deleted that repo and replaced it with this one when I decided to move away from Pyshark for packet capture. This version of __Espcap__ is lighter weight since it has far fewer module dependencies. 
 
 ## Requirements
 
