@@ -239,7 +239,7 @@ As you can see, there are a considerable number of fields in each packet, not al
 The default fields that are indexed are included in template creation commands in the *packet_template.sh* and *packet_template-6.x.sh* scripts.  To search for UDP packets in the `packets-2019-04-01` index from the most recent to least recently captured, you could use a query like this:
 
 ```
-GET packets-2019-04-01|_search
+GET packets-2019-04-01/_search
 {
     "query": {
         "match": {
@@ -284,7 +284,7 @@ Trying to index all the possible packet fields can slow Elasticsearch down, so a
 The mapping for `frame_frame_protocols` enables you to search for any protocol withing a given packet . For example if you want to revise the query used before to find DNS, instead of using ports, you could query with the `dns` in the `frame_frame_protocols` field:
 
 ```
-GET packets-2019-04-01|_search
+GET packets-2019-04-01/_search
 {
     "query": {
         "match": {
@@ -304,7 +304,7 @@ GET packets-2019-04-01|_search
 Another example is searching for all the TCP packets.  To do that, simply the previous query and substitute `tcp` for `dns`:
 
 ```
-GET packets-2019-04-01|_search
+GET packets-2019-04-01/_search
 {
     "query": {
         "match": {
