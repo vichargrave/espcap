@@ -6,6 +6,8 @@ __Espcap__ is a program that uses __tshark__ to capture packets live from a netw
 
 **Espcap** relies on the Elasticsearch Python Client module to index packets in Elasticsearch. The version of the client module must match the version of Elasticsearch you want to use.  The two most recent **major** versions of Elasticsearch are 6.x and 7.x, so **Espcap** has two different sets of requirements for each version.
 
+Although not required, you can run **Espcap** in a virtual environment if you want to keep its dependencies local instead of global.  If that is the case, I recommend using **pipenv**, which makes virtual environment easy to manage.  To get **pipenv**, just run `pip install pipenv`.
+
 ### Support for *Elasticsearch 7.x* requires:
 
 1. Python 3.7 (Python 2.7.x not supported)
@@ -24,36 +26,39 @@ __Espcap__ is a program that uses __tshark__ to capture packets live from a netw
 
 1. Install Wireshark for your OS.
 
-2. Clone the __Espcap__ repo then cd into the *espcap* directory. 
+2. Clone the __Espcap__ repo then cd into the *espcap* directory.
 
-3. Install the required Python modules for Elasticsearch 7.x:
+3. Optionally, activate your *pipenv* virtual environment:
+   ```
+   pipenv shell
+   ```
+
+4. Install the required Python modules for Elasticsearch 7.x:
    ```
    pip install -r requirements-7.x.txt
    ```
-
    If you have Elasticsearch 6.x, use the *requirements-6.x.txt* file instead. 
    
-4. Create the packet index template by running *scripts/templates.sh* as follows specifying the node IP address and TCP port of your Elasticsearch instance (localhost:9200 in this example):
-
+5. Create the packet index template by running *scripts/templates.sh* as follows specifying the node IP address and TCP port of your Elasticsearch instance (localhost:9200 in this example):
    ```
    scripts/packet_template-7.x.sh localhost:9200
    ```
    If you are using Elasticsearch 6.x, run *packet_template-6.x.sh* instead.
 
-5. Set the `tshark_path` variable in the *config/espcap.yml* file.  You can locate *espcap.yml* in one of 3 places:
+6. Set the `tshark_path` variable in the *config/espcap.yml* file.  You can locate *espcap.yml* in one of 3 places:
    - Use the file directly from the *config* directory.
    - Copy it to the same directory where *espcap.py* and its related Python files reside.
    - Create the */etc/espcap* directory and copy it there.
    - Any other directory you want.  However, if you don't use one of the previous options, you'll need to add the directory path to the list of config directories contained in the *tshark.py* file.
 
-6. cd into the *src* directory.
+7. cd into the *src* directory.
 
-7. Run *espcap.py* to index some packet data in Elasticsearch:
+8. Run *espcap.py* to index some packet data in Elasticsearch:
     ```
     espcap.py --file=test_pcaps/test_http.pcap --node=localhost:9200
     ```
 
-8. Run *packet_query.sh* as follows to check that the packet data resides in your Elasticsearch instance:
+9. Run *packet_query.sh* as follows to check that the packet data resides in your Elasticsearch instance:
     ```
     scripts/packet_query.sh localhost:9200
     ```
@@ -88,7 +93,7 @@ __Espcap__ is a program that uses __tshark__ to capture packets live from a netw
 
 + Same as the previous except load the *test_pcaps/test_http.pcap* file:
   ```
-  espcap.py --file=../test_pcaps|test_http.pcap --node=10.0.0.1:9200
+  espcap.py --file=../test_pcaps/test_http.pcap --node=10.0.0.1:9200
   ```
 
 + Do a live capture from the network interface `eth0`, get all packets and index them in the Elasticsearch cluster running at 10.0.0.1:9200:
