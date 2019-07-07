@@ -19,6 +19,7 @@ See the License for the specific language governing permissions and
 
 from datetime import datetime
 
+
 def index_packets(capture):
     """ Index packets generator method.
 
@@ -33,6 +34,7 @@ def index_packets(capture):
             '_source': packet
         }
         yield action
+
 
 def dump_packets(capture):
     """ Dump packets generator method that prints packets to stdout.

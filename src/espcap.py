@@ -30,6 +30,7 @@ from elasticsearch import helpers
 from tshark import Tshark
 from indexer import index_packets, dump_packets
 
+
 def init_live_capture(es, tshark, nic, bpf, chunk, count):
     """ Set up for live packet capture.
 
