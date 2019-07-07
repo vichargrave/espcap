@@ -41,7 +41,10 @@ class Tshark(object):
     def __init__(self):
         """ Sets the path to tshark.  Try all the possible paths in _config_paths"""
         self._command = list()
-        self._config_paths = ['espcap.yml','../config/espcap.yml','/etc/espcap/espcap.yml']
+        self._config_paths = ['./espcap.yml',
+                              '../config/espcap.yml',
+                              'config/espcap.yml',
+                              '/etc/espcap/espcap.yml']
 
         config = None
         for config_path in self._config_paths:
