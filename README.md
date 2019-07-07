@@ -6,7 +6,7 @@ __Espcap__ is a program that uses __tshark__ to capture packets live from a netw
 
 **Espcap** relies on the Elasticsearch Python Client module to index packets in Elasticsearch. The version of the client module must match the version of Elasticsearch you want to use.  The two most recent **major** versions of Elasticsearch are 6.x and 7.x, so **Espcap** has two different sets of requirements for each version.
 
-Although not required, you can run **Espcap** in a virtual environment if you want to keep its dependencies local instead of global.  If that is the case, I recommend using **pipenv**, which makes virtual environment easy to manage.  To get **pipenv**, just run `pip install pipenv`.
+Although not required, you can run **Espcap** in a virtual environment if you want to keep its dependencies local instead of global.  If you decide that's how you want to go, I recommend using **pipenv**, which makes virtual environment easy to manage.  To get **pipenv**, just run `pip install pipenv`.
 
 ### Support for *Elasticsearch 7.x* requires:
 
