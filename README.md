@@ -252,12 +252,12 @@ GET packets-2019-04-01/_search
         }
     },
     "sort": [
-    {
-        "timestamp": {
-            "order": "desc"
-        }
-    }
-  ]
+      {
+          "timestamp": {
+              "order": "desc"
+          }
+      }
+    ]
 }
 ```
 
@@ -297,12 +297,12 @@ GET packets-2019-04-01/_search
         }
     },
     "sort": [
-    {
-        "timestamp": {
-            "order": "desc"
-        }
-    }
-  ]
+      {
+          "timestamp": {
+              "order": "desc"
+          }
+      }
+    ]
 }
 ```
 
@@ -317,12 +317,12 @@ GET packets-2019-04-01/_search
         }
     },
     "sort": [
-    {
-        "timestamp": {
-            "order": "desc"
-        }
-    }
-  ]
+      {
+          "timestamp": {
+              "order": "desc"
+          }
+      }
+    ]
 }
 ```
 
