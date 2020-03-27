@@ -9,6 +9,8 @@
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+Pipfile
+Pipfile.lock
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -159,3 +161,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+
+# Ignore bento tool run paths (this line added by `bento init`)
+.bento/
+.bento*
