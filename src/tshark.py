@@ -63,7 +63,7 @@ class Tshark(object):
         :return: Packet JSON object that can be indexed in Elasticsearch
         """
         global closing
-        with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1) as proc:
+        with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=0) as proc:
             for packet in proc.stdout:
                 packet = self._drop_index_line(packet)
                 if packet is None:
