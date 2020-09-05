@@ -80,7 +80,7 @@ class Tshark(object):
 
         :return: List of network interfaces
         """
-        with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1) as proc:
+        with subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=0) as proc:
             for interface in proc.stdout:
                 print(interface.decode().rstrip('\n'))
 
