@@ -167,3 +167,6 @@ venv.bak/
 # Ignore bento tool run paths (this line added by `bento init`)
 .bento/
 .bento*
+
+# Visual Studio Code
+workspace.code-workspace
